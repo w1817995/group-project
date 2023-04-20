@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button, InputField, LabelText, Page } from "govuk-react";
+import { Button, InputField, LabelText, Page, Select } from "govuk-react";
 import $ from "jquery";
 
 function RegistrationPage() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [nhsNumber, setNhsNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +19,15 @@ function RegistrationPage() {
       type: "POST",
       dataType: "json",
       contentType: "application/json",
-      data: JSON.stringify({ nhsNumber, email, password }),
+      data: JSON.stringify({
+        firstName,
+        lastName,
+        gender,
+        dateOfBirth,
+        nhsNumber,
+        email,
+        password,
+      }),
       success: function (data) {
         // Process the response from the PHP file
       },
@@ -29,6 +41,33 @@ function RegistrationPage() {
     <Page>
       <h1>Registration</h1>
       <form onSubmit={handleSubmit}>
+        <LabelText>First Name:</LabelText>
+        <InputField
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+
+        <LabelText>Last Name:</LabelText>
+        <InputField
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+
+        <LabelText>Gender:</LabelText>
+        <Select value={gender} onChange={(e) => setGender(e.target.value)}>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </Select>
+
+        <LabelText>Date of Birth:</LabelText>
+        <InputField
+          type="date"
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value)}
+        />
+
         <LabelText>NHS Number:</LabelText>
         <InputField
           value={nhsNumber}
@@ -47,7 +86,6 @@ function RegistrationPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button type="submit">Register</Button>
       </form>
     </Page>
   );
